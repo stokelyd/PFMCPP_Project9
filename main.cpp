@@ -51,7 +51,37 @@ struct Wrapper
     { 
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
+
+    void print()
+    {
+        std::cout << "Print function from wrapper\n";
+    }
 };
+
+// 3) recursive variadic template
+template<typename T, typename ...Args>
+void variadicHelper(T first, Args ... everythingElse)
+{
+    Wrapper<T>(first).print();
+    // Wrapper<T>::print();
+
+    // Wrapper<T> wrapper;
+    // wrapper.print();
+
+    variadicHelper( everythingElse... ); // recursive call
+}
+
+// 4) single-parameter version of variadic template
+template<typename T>
+void variadicHelper(T first)
+{
+    
+
+    // Wrapper<T> wrapper;
+    // wrapper.print();
+
+    // Wrapper<T>::print();
+}
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
