@@ -20,6 +20,7 @@ Make the following program work, which makes use of Variadic templates and Recur
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 
 struct Point
 {
@@ -56,32 +57,31 @@ struct Wrapper
     {
         std::cout << "Print function from wrapper\n";
     }
+private:
+    Type val;
 };
 
-// 3) recursive variadic template
-template<typename T, typename ...Args>
-void variadicHelper(T first, Args ... everythingElse)
+// 4) single-parameter version of template
+template<typename T>
+void variadicHelper(T single)
 {
-    Wrapper<T>(first).print();
-    // Wrapper<T>::print();
+    // Wrapper<T>(first).print();
+    // std::cout << typeid(last).name() << ": " << last << " from single template" << std::endl;
+    std::cout << single << ": from single template\n"; 
 
-    // Wrapper<T> wrapper;
-    // wrapper.print();
+}
 
+// 3) recursive variadic template
+template<typename T, typename... Args>
+void variadicHelper(T first, Args... everythingElse) //&&?
+{
+    // std::cout << typeid(first).name() << ": " << first << std::endl;
+
+    variadicHelper( first );
     variadicHelper( everythingElse... ); // recursive call
 }
 
-// 4) single-parameter version of variadic template
-template<typename T>
-void variadicHelper(T first)
-{
-    
 
-    // Wrapper<T> wrapper;
-    // wrapper.print();
-
-    // Wrapper<T>::print();
-}
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
@@ -99,7 +99,9 @@ void variadicHelper(T first)
 
 int main()
 {
-    variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
+    // variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
+    // variadicHelper( 3, std::string("burgers"), 2.5 );
+    variadicHelper( 3, 2, 4.7 );
 }
 
 
