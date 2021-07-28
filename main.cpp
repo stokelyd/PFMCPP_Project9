@@ -45,6 +45,8 @@ private:
     float x{0}, y{0};
 };
 
+
+
 template<typename Type>
 struct Wrapper
 {
@@ -61,22 +63,12 @@ private:
     Type val;
 };
 
-// 8) Wrapper class specialization for the Point class
+// Challenge 1: specialized print() member function 
 template<>
-struct Wrapper<Point>
+void Wrapper<Point>::print()
 {
-    Wrapper(Point&& t) : val(std::move(t)) 
-    { 
-        std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
-    }
-
-    void print()
-    {
-        std::cout << "Wrapper::print(" << val.toString() << ")\n";
-    }
-private:
-    Point val;
-};
+    std::cout << "Wrapper::print(" << val.toString() << ")\n";
+}
 
 
 // 4) single-parameter version of template
