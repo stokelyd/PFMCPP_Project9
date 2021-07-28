@@ -81,18 +81,18 @@ private:
 
 // 4) single-parameter version of template
 template<typename T>
-void variadicHelper(T first)
+void variadicHelper(T&& first)
 {
     Wrapper<T>( std::forward<T>(first) ).print();
 }
 
 // 3) recursive variadic template
 template<typename T, typename ... Args>
-void variadicHelper(T first, Args ... everythingElse) //&&?
+void variadicHelper(T&& first, Args&& ... everythingElse)
 {
     Wrapper<T>( std::forward<T>(first) ).print();
 
-    variadicHelper( everythingElse... ); // recursive call
+    variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
 }
 
 
@@ -114,10 +114,6 @@ void variadicHelper(T first, Args ... everythingElse) //&&?
 int main()
 {
     variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
-    // variadicHelper( 3, std::string("burgers"), 2.5 );
-    // variadicHelper( 3, 2, 4.7 );
-    // variadicHelper( 3, 4.7 );
-    // variadicHelper( 3, 4.7, 1 );
 }
 
 
