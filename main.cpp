@@ -61,6 +61,24 @@ private:
     Type val;
 };
 
+// 8) Wrapper class specialization for the Point class
+template<>
+struct Wrapper<Point>
+{
+    Wrapper(Point&& t) : val(std::move(t)) 
+    { 
+        std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
+    }
+
+    void print()
+    {
+        std::cout << "Wrapper::print(" << val.toString() << ")\n";
+    }
+private:
+    Point val;
+};
+
+
 // 4) single-parameter version of template
 template<typename T>
 void variadicHelper(T first)
@@ -95,8 +113,8 @@ void variadicHelper(T first, Args ... everythingElse) //&&?
 
 int main()
 {
-    // variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
-    variadicHelper( 3, std::string("burgers"), 2.5 );
+    variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
+    // variadicHelper( 3, std::string("burgers"), 2.5 );
     // variadicHelper( 3, 2, 4.7 );
     // variadicHelper( 3, 4.7 );
     // variadicHelper( 3, 4.7, 1 );
