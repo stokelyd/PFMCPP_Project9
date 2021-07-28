@@ -20,6 +20,7 @@ Make the following program work, which makes use of Variadic templates and Recur
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 
 struct Point
 {
@@ -44,6 +45,8 @@ private:
     float x{0}, y{0};
 };
 
+
+
 template<typename Type>
 struct Wrapper
 {
@@ -51,7 +54,61 @@ struct Wrapper
     { 
         std::cout << "Wrapper(" << typeid(val).name() << ")" << std::endl; 
     }
+
+    void print()
+    {
+        std::cout << "Wrapper::print(" << val << ")\n";
+    }
+private:
+    Type val;
 };
+
+// Challenge 1: specialized print() member function 
+template<>
+void Wrapper<Point>::print()
+{
+    std::cout << "Wrapper::print(" << val.toString() << ")\n";
+}
+
+
+// 4) single-parameter version of template
+// template<typename T>
+// void variadicHelper(T&& first)
+// {
+//     Wrapper<T>( std::forward<T>(first) ).print();
+// }
+
+void variadicHelper();
+
+// 3) recursive variadic template (Challenge 2: alternate recursive solution #1)
+template<typename T, typename ... Args>
+void variadicHelper(T&& first, Args&& ... everythingElse)
+{
+    Wrapper<T>( std::forward<T>(first) ).print();
+
+    variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
+}
+
+void variadicHelper()
+{
+}
+
+// Challenge 2: alternate recursive solution #2
+// template<typename T, typename ... Args>
+// void variadicHelper(T&& first, Args&& ... everythingElse)
+// {
+//     Wrapper<T>( std::forward<T>(first) ).print();
+
+//     if constexpr (!sizeof ... (Args) )
+//     {
+//     }
+//     else
+//     {
+//         variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
+//     }
+// }
+
+
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
