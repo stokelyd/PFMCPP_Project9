@@ -72,19 +72,42 @@ void Wrapper<Point>::print()
 
 
 // 4) single-parameter version of template
-template<typename T>
-void variadicHelper(T&& first)
-{
-    Wrapper<T>( std::forward<T>(first) ).print();
-}
+// template<typename T>
+// void variadicHelper(T&& first)
+// {
+//     Wrapper<T>( std::forward<T>(first) ).print();
+// }
+
+
+// Challenge 2: alternate recursive solution #1
+// void variadicHelper()
+// {
+// }
+
 
 // 3) recursive variadic template
+// template<typename T, typename ... Args>
+// void variadicHelper(T&& first, Args&& ... everythingElse)
+// {
+//     Wrapper<T>( std::forward<T>(first) ).print();
+
+//     variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
+// }
+
+
+// Challenge 2: alternate recursive solution #2
 template<typename T, typename ... Args>
 void variadicHelper(T&& first, Args&& ... everythingElse)
 {
     Wrapper<T>( std::forward<T>(first) ).print();
 
-    variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
+    if constexpr (!sizeof ... (Args) )
+    {
+    }
+    else
+    {
+        variadicHelper( std::forward<Args>(everythingElse) ... ); // recursive call
+    }
 }
 
 
@@ -106,6 +129,7 @@ void variadicHelper(T&& first, Args&& ... everythingElse)
 int main()
 {
     variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
+    // variadicHelper( 3 );
 }
 
 
