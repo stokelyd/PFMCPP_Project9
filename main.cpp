@@ -72,13 +72,15 @@ void variadicHelper(T single)
 }
 
 // 3) recursive variadic template
-template<typename T, typename... Args>
-void variadicHelper(T first, Args... everythingElse) //&&?
+template<typename T, typename ... Args>
+void variadicHelper(T&& first, Args&& ... everythingElse) //&&?
 {
-    // std::cout << typeid(first).name() << ": " << first << std::endl;
+    Wrapper<T>(std::forward<T>(first) ).print();
 
-    variadicHelper( first );
-    variadicHelper( everythingElse... ); // recursive call
+    // Wrapper(first).print();
+
+
+    // variadicHelper( everythingElse... ); // recursive call
 }
 
 
@@ -100,8 +102,8 @@ void variadicHelper(T first, Args... everythingElse) //&&?
 int main()
 {
     // variadicHelper( 3, std::string("burgers"), 2.5, Point{3.f, 0.14f} );
-    // variadicHelper( 3, std::string("burgers"), 2.5 );
-    variadicHelper( 3, 2, 4.7 );
+    variadicHelper( 3, std::string("burgers"), 2.5 );
+    // variadicHelper( 3, 2, 4.7 );
 }
 
 
